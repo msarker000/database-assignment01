@@ -1,9 +1,17 @@
+package edu.ccny.db;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 
+ * this class is used to find combination of a set of attribute
+ * 
+ * @author ayub
+ *
+ */
 public class Combination {
 
 	private List<Character> seed = new ArrayList<Character>();
@@ -14,7 +22,7 @@ public class Combination {
 		build();
 	}
 
-	public void build() {
+	private void build() {
 		int numOfSubsets = (int) Math.pow(2, seed.size()); // OR Math.pow(2, list.size())
 		// For i from 0 to 7 in case of [a, b, c],
 		// we will pick 0(0,0,0) and check each bits to see any bit is set,
@@ -35,28 +43,15 @@ public class Combination {
 			subsets.add(subset);
 		}
 	}
-	
-	
+	/**
+	 * gives a combination set of given length
+	 * 
+	 * @param len
+	 * @return
+	 */
 	public Set<Set<Character>> gitCombinationOfLen(int len){
 		Set<Set<Character>> subsetOfSpecifiedLen = subsets.stream().filter(set ->set.size()==len).collect(Collectors.toSet());
 		return subsetOfSpecifiedLen;
 	}
-
-	public static void main(String[] args) {
-		Set<Character> set = new HashSet<>();
-		set.add('A');
-		set.add('B');
-		set.add('C');
-		set.add('D');
-		set.add('E');
-		
-		Combination combination = new Combination(set);
-		System.out.println(combination.gitCombinationOfLen(1));
-		
-		
-
-		//System.out.println(getSubsetUsingBitMap(list));
-	}
-
 	
 }
