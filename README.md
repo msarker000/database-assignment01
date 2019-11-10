@@ -1,6 +1,6 @@
 # database-assignment01
 
-###Closure
+### Closure
 	  
 	  Find all FD's for attributes a in a relation R
 	 
@@ -85,6 +85,31 @@
 	 
 	 
 ### How to run
+   this application is compatible with jdk 8. So you show check your jdk first.
+   
+   Go to executable folder and download jar and run.sh script
+   
+   to run
+   
+   ./run.sh
+   
+   you will be shown a prompt. please take look at sample-input-output.txt file
+   Any time you enter 'QUIT' and enter, application will exit.
+   
+  
+   if you have need to set java_home path. Open run.sh and comment out the following line and modify path of you
+   #export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_112.jdk/Contents/Home
+   
+   
+   
+   
+   
+   
+   
+   
+   
+
+
 	 
 	 
 	 	   	

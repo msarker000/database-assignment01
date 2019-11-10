@@ -174,7 +174,6 @@ public class DBUtilTest {
 		Set<Set<Character>> keys = relation.getKeys();
 		assertEquals(4, keys.size());
 		
-        System.out.println(keys);
         
 		assertTrue(keys.contains(SetUtil.getSet("A")));	
 		assertTrue(keys.contains(SetUtil.getSet("E")));
@@ -187,6 +186,174 @@ public class DBUtilTest {
 		
 		Set<Character> closureSetBC = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("BC"));
 		assertEquals(SetUtil.getSet("ABCDE"), closureSetBC);
+	}
+	
+	
+	@Test
+	public void testKey8() {
+		
+		Relation relation = new Relation("ABCD");
+		relation.addFD(SetUtil.getSet("AB"), SetUtil.getSet("CD"));
+
+		DBUtil.findKeys(relation);
+		Set<Set<Character>> keys = relation.getKeys();
+		assertEquals(1, keys.size());
+        
+		assertTrue(keys.contains(SetUtil.getSet("AB")));	
+		
+		Set<Character> closureSetAB = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("AB"));
+		assertEquals(SetUtil.getSet("ABCD"), closureSetAB);	
+	
+	}
+	
+	@Test
+	public void testKey9() {
+
+		Relation relation = new Relation("ABCDE");
+		relation.addFD(SetUtil.getSet("AB"), SetUtil.getSet("CD"));
+		relation.addFD(SetUtil.getSet("E"), SetUtil.getSet("A"));
+		relation.addFD(SetUtil.getSet("D"), SetUtil.getSet("A"));
+
+		DBUtil.findKeys(relation);
+		Set<Set<Character>> keys = relation.getKeys();
+		assertEquals(1, keys.size());
+			
+		assertTrue(keys.contains(SetUtil.getSet("BE")));
+		
+		
+		Set<Character> closureSetA = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("AB"));
+		assertEquals(SetUtil.getSet("ABCD"), closureSetA);
+		
+		
+		Set<Character> closureSetBC = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("BE"));
+		assertEquals(SetUtil.getSet("ABCDE"), closureSetBC);
+	}
+	
+	@Test
+	public void testKeyAndNF1() {
+	
+		Relation relation = new Relation("ABCD");
+		relation.addFD(SetUtil.getSet("ABC"), SetUtil.getSet("D"));
+		relation.addFD(SetUtil.getSet("D"), SetUtil.getSet("A"));
+		
+		DBUtil.findKeys(relation);
+		Set<Set<Character>> keys = relation.getKeys();
+		assertEquals(2, keys.size());
+		
+		
+		assertTrue(keys.contains(SetUtil.getSet("ABC")));
+		assertTrue(keys.contains(SetUtil.getSet("BCD")));
+		
+		
+		Set<Character> closureSetABC = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("ABC"));
+		assertEquals(SetUtil.getSet("ABCD"), closureSetABC);
+		
+		
+		Set<Character> closureSetBC = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("D"));
+		assertEquals(SetUtil.getSet("DA"), closureSetBC);
+		
+		DBUtil.findNormalForm(relation);
+		
+		assertEquals(NormalForm.THIRD_NF, relation.getNormalForm());
+		
+	}
+	
+	@Test
+	public void testKeyAndNF2() {
+
+		Relation relation = new Relation("ABCD");
+		relation.addFD(SetUtil.getSet("AB"), SetUtil.getSet("CD"));
+		relation.addFD(SetUtil.getSet("D"), SetUtil.getSet("A"));
+		
+		DBUtil.findKeys(relation);
+		Set<Set<Character>> keys = relation.getKeys();
+		assertEquals(2, keys.size());
+		
+		assertTrue(keys.contains(SetUtil.getSet("AB")));
+		assertTrue(keys.contains(SetUtil.getSet("BD")));
+		
+		
+		Set<Character> closureSetAB = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("AB"));
+		assertEquals(SetUtil.getSet("ABCD"), closureSetAB);
+		
+		Set<Character> closureSetBD = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("BD"));
+		assertEquals(SetUtil.getSet("ABCD"), closureSetBD);
+		
+		DBUtil.findNormalForm(relation);
+		
+		assertEquals(NormalForm.THIRD_NF, relation.getNormalForm());
+		
+		
+	}
+	
+	
+	@Test
+	public void testKeyAndN3() {
+		Relation relation = new Relation("ABCDE");
+		relation.addFD(SetUtil.getSet("AB"), SetUtil.getSet("CD"));
+		relation.addFD(SetUtil.getSet("E"), SetUtil.getSet("A"));
+		relation.addFD(SetUtil.getSet("D"), SetUtil.getSet("A"));
+		
+		DBUtil.findKeys(relation);
+		Set<Set<Character>> keys = relation.getKeys();
+		assertEquals(1, keys.size());
+		
+		assertTrue(keys.contains(SetUtil.getSet("BE")));
+
+		Set<Character> closureSetAB = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("BE"));
+		assertEquals(SetUtil.getSet("ABCDE"), closureSetAB);
+		
+		DBUtil.findNormalForm(relation);
+	
+		assertEquals(NormalForm.FIRST_NF, relation.getNormalForm());
+	
+	}
+	
+	@Test
+	public void testKeyAndN4() {
+		Relation relation = new Relation("ABCDE");
+		relation.addFD(SetUtil.getSet("AB"), SetUtil.getSet("CD"));
+		relation.addFD(SetUtil.getSet("E"), SetUtil.getSet("A"));
+		relation.addFD(SetUtil.getSet("D"), SetUtil.getSet("A"));
+		
+		DBUtil.findKeys(relation);
+		Set<Set<Character>> keys = relation.getKeys();
+		assertEquals(1, keys.size());
+		
+		assertTrue(keys.contains(SetUtil.getSet("BE")));
+
+		Set<Character> closureSetAB = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("BE"));
+		assertEquals(SetUtil.getSet("ABCDE"), closureSetAB);
+		
+		DBUtil.findNormalForm(relation);
+
+		assertEquals(NormalForm.FIRST_NF, relation.getNormalForm());
+	}
+		
+		
+		@Test
+		public void testKeyAndN5() {
+			Relation relation = new Relation("ABCD");
+			relation.addFD(SetUtil.getSet("B"), SetUtil.getSet("C"));
+			relation.addFD(SetUtil.getSet("D"), SetUtil.getSet("A"));
+			
+			DBUtil.findKeys(relation);
+			Set<Set<Character>> keys = relation.getKeys();
+			assertEquals(1, keys.size());
+			
+			assertTrue(keys.contains(SetUtil.getSet("BD")));
+
+			Set<Character> closureSetAB = DBUtil.findClosure(relation.getConvertedNonTrivialFDs(), SetUtil.getSet("BD"));
+			assertEquals(SetUtil.getSet("ABCD"), closureSetAB);
+			
+			DBUtil.findNormalForm(relation);
+			
+			//System.out.println(relation.getNormalForm().getName());
+			assertEquals(NormalForm.FIRST_NF, relation.getNormalForm());
+			
+		//	for(FunctionDependency fd: relation.getOriginalFDs()){
+		//		System.out.println("\t"+fd.toPrintableFormat() +" : "+ fd.getNormalForm().getName());
+		//	}
 	}
 
 }

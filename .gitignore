@@ -6,7 +6,6 @@ out/
 *.iml
 *.ipr
 *.iws
-
 ##############################
 ## Eclipse
 ##############################
@@ -21,7 +20,8 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.loadpath
+.loadpathi
+org.eclipse.jdt.core.*
 ##############################
 ## OS X
 ##############################

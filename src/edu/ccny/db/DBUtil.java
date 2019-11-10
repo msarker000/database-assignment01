@@ -228,7 +228,7 @@ public class DBUtil {
 	public static boolean isPartOfKeys(Set<Character> attributesSets, Set<Set<Character>> keys) {
 		for (Set<Character> entry : keys) {
 			// check if key match attributes list then it is not part of key
-			if (entry.containsAll(attributesSets)) {
+			if (entry.equals(attributesSets)) {
 				return false;
 			}
 			// Now check any of the attribute contains in key

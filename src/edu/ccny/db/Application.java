@@ -19,87 +19,15 @@ import java.util.stream.Collectors;
  */
 public class Application {
 
-
-	public static void testFindKey7() {
-		Set<Character> relation = SetUtil.getSet("ABCD");
-		Set<FunctionDependency> functionDependencies = new LinkedHashSet<FunctionDependency>();
-		functionDependencies.add(new FunctionDependency("AB", "CD"));
-
-		//findKeys(functionDependencies, relation);
-
-	}
-
-	public static void testFindKey8() {
-		Set<Character> relation = SetUtil.getSet("ABCDE");
-		Set<FunctionDependency> functionDependencies = new LinkedHashSet<FunctionDependency>();
-		functionDependencies.add(new FunctionDependency("AB", "CD"));
-		functionDependencies.add(new FunctionDependency("E", "A"));
-		functionDependencies.add(new FunctionDependency("D", "A"));
-		// functionDependencies.add(new FunctionDependency("E", "A"));
-
-		//findKeys(functionDependencies, relation);
-
-	}
-
-	public static void testFindKey9() {
-
-		Relation relation = new Relation("ABCD");
-		relation.addFD("ABC", "D");
-		relation.addFD("D", "A");
-
-		DBUtil.findKeys(relation);
-		System.out.println(relation);
-
-	}
-
-	public static void testFindKey10() {
-
-		Relation relation = new Relation("ABCD");
-		relation.addFD("AB", "CD");
-
-		DBUtil.findKeys(relation);
-
-		DBUtil.findNormalForm(relation);
-
-		System.out.println(relation);
-	}
-
-	public static void testFindKey11() {
-
-		Relation relation = new Relation("ABCDE");
-		relation.addFD("AB", "CD");
-		relation.addFD("E", "A");
-		relation.addFD("D", "A");
-
-		DBUtil.findKeys(relation);
-
-		DBUtil.findNormalForm(relation);
-
-		System.out.println(relation);
-	}
-
-	public static void testFindKey12() {
-
-		Relation relation = new Relation("ABCD");
-		relation.addFD("ABC", "D");
-		relation.addFD("D", "A");
-
-		DBUtil.findKeys(relation);
-
-		DBUtil.findNormalForm(relation);
-
-		System.out.println(relation);
-	}
-
 	public static void main(String[] args) throws IOException {
 
 		// Enter data using BufferReader
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
 		// Reading data using readLine
-		System.out.println("******************************************");
-		System.out.println("***********Enter QUIT to exit*************");
-		System.out.println("******************************************");
+		System.out.println("******************************************************************************************");
+		System.out.println("**********************************   Enter QUIT to exit    *******************************");
+		System.out.println("******************************************************************************************");
 		while (true) {
 			// get Relational attributes
 			Relation relation = getRelationAttributesFromUserInput(reader);
@@ -113,42 +41,51 @@ public class Application {
 				System.out.println("\t" + fd.toPrintableFormat());
 			}
 
-			String questionStr = "";
-			do {
-				System.out.println("Enter 1: to find closures");
-				System.out.println("      2: to find keys and NF");
-				System.out.println("      #: to start with new ralation and FDs");
-				System.out.print("Option: ");
-				questionStr = getUserInput(reader);
-				if (questionStr.equals("1")) {
-					findClosureFromUserInput(reader, relation);
-
-				} else if (questionStr.equals("2")) {
-					// TODO: find keys and normalization
-					DBUtil.findKeys(relation);
-					DBUtil.findNormalForm(relation);
-					
-					System.out.print("\n\tKeys:\t");
-					for(Set<Character> key: relation.getKeys()){
-						System.out.print(setToPrintableString(key)+"\t");
-					}
-					System.out.println("\nNF of Relation:\t"+relation.getNormalForm().getName());
-					
-					System.out.println("\nNF of FDs:");
-					for(FunctionDependency fd: relation.getOriginalFDs()){
-						System.out.println("\t"+fd.toPrintableFormat() +" : "+ fd.getNormalForm().getName());
-					}
-					System.out.println();
-				}
-			} while (!questionStr.equals("#"));
+			//show user question and answer based your input
+			showQuestionAndAnswerToUser(reader, relation);
 
 		}
+	}
+
+	private static void showQuestionAndAnswerToUser(BufferedReader reader, Relation relation) throws IOException {
+		String questionStr = "";
+		do {
+			System.out.println("Enter 1: to find closures");
+			System.out.println("      2: to find keys and NF");
+			System.out.println("      #: to start with new relation and FDs");
+			System.out.print("Option: ");
+			questionStr = getUserInput(reader);
+			if (questionStr.equals("1")) {
+				//find closure of user input
+				findClosureFromUserInput(reader, relation);
+
+			} else if (questionStr.equals("2")) {
+				// find keys and normalization
+				findKeysAndNormalForm(relation);
+			}
+		} while (!questionStr.equals("#"));
+	}
+
+	private static void findKeysAndNormalForm(Relation relation) {
+		DBUtil.findKeys(relation);
+		DBUtil.findNormalForm(relation);
+		System.out.print("\n\tKeys:\t");
+		for(Set<Character> key: relation.getKeys()){
+			System.out.print(setToPrintableString(key)+"\t");
+		}
+		System.out.println("\nNF of Relation:\t"+relation.getNormalForm().getName());
+		
+		System.out.println("\nNF of FDs:");
+		for(FunctionDependency fd: relation.getOriginalFDs()){
+			System.out.println("\t"+fd.toPrintableFormat() +" : "+ fd.getNormalForm().getName());
+		}
+		System.out.println();
 	}
 
 	private static void findClosureFromUserInput(BufferedReader reader, Relation relation)
 			throws IOException {
 		// find Close in loop
-		System.out.println("Enter seed or # for back");
+		System.out.println("Enter seed or # for back menu");
 		String seedStr = "";
 		do {
 			System.out.print("Seed: ");
@@ -192,8 +129,9 @@ public class Application {
 		return relation;
 	}
 
+	
 	private static void addFDsToRelationFromUserInput(Relation relation, BufferedReader reader) throws IOException {
-		System.out.println(">>>>Enter FDs in format X->Y. Enter # to finish entering FD<<<<");
+		System.out.println(">>>>Enter FDs in format X->Y. Enter # to finish entering FD<<<<\n");
 		String fdStr = "";
 		boolean isFDInputDone = false;
 		
